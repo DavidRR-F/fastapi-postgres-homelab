@@ -1,0 +1,71 @@
+version: "3"
+services:
+  fastapi:
+    container_name: fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://fastapi_db:fast_table
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.1-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=fastapi
+      - POSTGRES_PASSWORD=fastapi
+      - POSTGRES_DB=fast_table
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://fastapi:fastapi@postgres:5432/fast_table?sslmode=disable"
+    links:
+      - postgres
+      - prometheus
+    depends_on:
+      - postgres
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./monitoring/grafana/datasource.yml:/etc/grafana/provisioning/datasource.yml
+      - ./monitoring/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    env_file:
+      - ./monitoring/grafana/config.monitoring
+
+networks:
+  default:
+    name: fastapi
+
+volumes:
+  postgres_data:

@@ -12,11 +12,16 @@ Template for running FastAPI Microservice with a Postgres Database w/ Monitoring
 
 ## References
 
-| Developer |                                             Repository                                             |
-| :-------: | :------------------------------------------------------------------------------------------------: |
-| Tiangolo  |                           [FastAPI](https://github.com/tiangolo/fastapi)                           |
-| Trallnag  | [prometheus-fastapi-instrumentator](https://github.com/trallnag/prometheus-fastapi-instrumentator) |
-|  Kludex   |         [fastapi-prometheus-grafana](https://github.com/Kludex/fastapi-prometheus-grafana)         |
+|    Developer    |                                             Repository                                             |
+| :-------------: | :------------------------------------------------------------------------------------------------: |
+|    Tiangolo     |                           [FastAPI](https://github.com/tiangolo/fastapi)                           |
+|    Trallnag     | [prometheus-fastapi-instrumentator](https://github.com/trallnag/prometheus-fastapi-instrumentator) |
+|     Kludex      |         [fastapi-prometheus-grafana](https://github.com/Kludex/fastapi-prometheus-grafana)         |
+| Code-Specialist |              [fastapi-keycloak](https://github.com/code-specialist/fastapi-keycloak)               |
+
+### Articles
+
+Josh Campos: [FastAPI API Key](https://itsjoshcampos.codes/fast-api-api-key-authorization)
 
 # Getting Started
 

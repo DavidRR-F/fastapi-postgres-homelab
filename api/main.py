@@ -1,19 +1,13 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer
 from prometheus_fastapi_instrumentator import Instrumentator
-from typing import Annotated
 from api.routes import base
 from api.core.config import settings
+from api.core.keycloak import idp
 
 app = FastAPI()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@app.get("/protected/")
-async def get_protected(token: Annotated[str, Depends(oauth2_scheme)]):
-    return {"message": "Your Authenticated"}
+idp.add_swagger_config(app)
 
 app.include_router(base.router)
 
